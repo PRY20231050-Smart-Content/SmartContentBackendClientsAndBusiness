@@ -51,17 +51,16 @@ class ClientCreateView(APIView):
 
    
     def get(self, request):
-        page = request.query_params.get('page', 1)
-        perpage = request.query_params.get('perPage', 10)
-        sortby = request.query_params.get('sortBy', 'first_name')
-        sortOrder = request.query_params.get('sortOrder', 'ASC')
-        filterDateFrom = request.query_params.get('date_from')
-        filterDateTo = request.query_params.get('date_to')
-        text = request.query_params.get('text', '')
-
-
+        page = request.data.get('npage', 1)
+        perpage = request.data.get('perPage', 10)
+        sortby = request.data.get('sortBy', 'first_name')
+        sortOrder = request.data.get('sortOrder', 'ASC')
+        filterDateFrom = request.data.get('date_from')
+        filterDateTo = request.data.get('date_to')
+        text = request.data.get('text', '')
+        
        
- 
+
 
         params = [
             
@@ -80,7 +79,7 @@ class ClientCreateView(APIView):
                 cursor.callproc('sp_get_clients', params)
                 data = cursor.fetchall()
                 
-                
+
 
             if data:
                 paginator = Paginator(data, perpage)

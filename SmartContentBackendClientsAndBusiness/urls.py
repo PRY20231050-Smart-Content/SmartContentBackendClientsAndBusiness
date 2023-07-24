@@ -19,6 +19,7 @@ from SmartContentBackendClientsAndBusinessApp.views.client_views import ClientCr
 from SmartContentBackendClientsAndBusinessApp.views.industry_views import IndustryCreateView
 from SmartContentBackendClientsAndBusinessApp.views.address_views import AddressCreateView
 from SmartContentBackendClientsAndBusinessApp.views.business_views import BusinessCreateView
+from SmartContentBackendClientsAndBusinessApp.views.client_details_views import ClientCreateViewDetails
 
 
 urlpatterns = [
@@ -27,6 +28,7 @@ urlpatterns = [
     path('update-client/', ClientCreateView.as_view()),
     path('delete-client/', ClientCreateView.as_view()),
     path('get-all-clients/', ClientCreateView.as_view()),
+    path('get-client-by-id/<int:client_id>/', ClientCreateViewDetails.as_view(), name='client-detail'),
     path('create-industry/', IndustryCreateView.as_view()),
     path('create-address/', AddressCreateView.as_view()),
     path('create-business/', BusinessCreateView.as_view()),

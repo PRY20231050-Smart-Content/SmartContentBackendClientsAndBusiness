@@ -58,10 +58,7 @@ class ClientCreateView(APIView):
         filterDateFrom = request.data.get('date_from')
         filterDateTo = request.data.get('date_to')
         text = request.data.get('text', '')
-        
-       
-
-
+   
         params = [
             
             text,
@@ -103,6 +100,32 @@ class ClientCreateView(APIView):
                 return Response(result, status=status.HTTP_200_OK)
 
             return Response({'message': 'No data found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def getClientById(self, request, client_id):
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM clients WHERE id = %s", [client_id])
+                data = cursor.fetchone()
+
+            if data:
+                client_details = {
+                    'id': data[0],
+                    'first_name': data[1],
+                    'last_name': data[2],
+                    'address_id': data[3],
+                    'email': data[4],
+                    'phone': data[5],
+                    'profile_picture': data[6],
+                    'user_id': data[7],
+                    # Include other fields as needed
+                }
+
+                return Response(client_details, status=status.HTTP_200_OK)
+
+            return Response({'message': 'Client not found.'}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

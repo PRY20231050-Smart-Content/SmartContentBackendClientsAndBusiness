@@ -29,5 +29,5 @@ urlpatterns = [
     path('create-industry/', IndustryCreateView.as_view()),
     path('create-address/', AddressCreateView.as_view()),
     path('create-business/', BusinessCreateView.as_view()),
-    
+    path('update-business/', BusinessCreateView.as_view()),
 ]

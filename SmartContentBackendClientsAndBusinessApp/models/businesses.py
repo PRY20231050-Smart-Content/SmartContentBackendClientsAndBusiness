@@ -18,5 +18,7 @@ class Business(models.Model):
     mission = models.TextField()
     vision = models.TextField()
     values = models.TextField()
+    updated_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True)
     class Meta:
         db_table = 'businesses'

@@ -41,3 +41,26 @@ def call_update_address(id, city, country, postal_code, street):
 def call_delete_address(id):
     with connection.cursor() as cursor:
         cursor.execute("CALL delete_address(%s)", [id])
+
+
+
+
+
+
+def call_insert_business(name, target_audience, experience_years, reach_range, phone, 
+                         address_id, website, mail, industry_id, schedule, 
+                         copy_languages, client_id, mission, vision, values):
+    with connection.cursor() as cursor:
+        cursor.execute("CALL insert_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                       [name, target_audience, experience_years, reach_range, phone, 
+                        address_id, website, mail, industry_id, schedule, 
+                        copy_languages, client_id, mission, vision, values])
+                        
+def call_update_business(business_id, name, target_audience, experience_years, reach_range, phone, 
+                         address_id, website, mail, industry_id, schedule, 
+                         copy_languages, client_id, mission, vision, values):
+    with connection.cursor() as cursor:
+        cursor.execute("CALL update_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                       [business_id, name, target_audience, experience_years, reach_range, phone, 
+                        address_id, website, mail, industry_id, schedule, 
+                        copy_languages, client_id, mission, vision, values])

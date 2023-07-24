@@ -9,6 +9,7 @@ class Client(models.Model):
     phone = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True)
+    deleted_at = models.DateTimeField(null=True)
     profile_picture = models.CharField(max_length=255)  # Considera usar ImageField si es una imagen
     user_id = models.ForeignKey('User', on_delete=models.CASCADE, db_column='user_id')
 

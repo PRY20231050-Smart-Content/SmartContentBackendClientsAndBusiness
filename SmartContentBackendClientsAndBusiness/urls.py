@@ -18,6 +18,7 @@ from django.urls import path
 from SmartContentBackendClientsAndBusinessApp.views.client_views import ClientCreateView
 from SmartContentBackendClientsAndBusinessApp.views.industry_views import IndustryCreateView
 from SmartContentBackendClientsAndBusinessApp.views.address_views import AddressCreateView
+from SmartContentBackendClientsAndBusinessApp.views.business_views import BusinessCreateView
 
 
 urlpatterns = [
@@ -27,5 +28,6 @@ urlpatterns = [
     path('delete-client/', ClientCreateView.as_view()),
     path('create-industry/', IndustryCreateView.as_view()),
     path('create-address/', AddressCreateView.as_view()),
+    path('create-business/', BusinessCreateView.as_view()),
     
 ]

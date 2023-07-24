@@ -26,6 +26,7 @@ urlpatterns = [
     path('create-client/', ClientCreateView.as_view()),
     path('update-client/', ClientCreateView.as_view()),
     path('delete-client/', ClientCreateView.as_view()),
+    path('get-all-clients/', ClientCreateView.as_view()),
     path('create-industry/', IndustryCreateView.as_view()),
     path('create-address/', AddressCreateView.as_view()),
     path('create-business/', BusinessCreateView.as_view()),

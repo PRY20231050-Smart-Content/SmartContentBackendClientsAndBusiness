@@ -1,9 +1,8 @@
 # views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from ..db_operations import call_insert_business, call_update_business
 from rest_framework import status
-
+from django.db import connection
 class BusinessCreateView(APIView):
     def post(self, request):
         try:
@@ -23,9 +22,11 @@ class BusinessCreateView(APIView):
             vision = request.data.get('vision')
             values = request.data.get('values')
 
-            call_insert_business(name, target_audience, experience_years, reach_range, phone, 
-                                 address_id, website, mail, industry_id, schedule, 
-                                 copy_languages, client_id, mission, vision, values)
+            with connection.cursor() as cursor:
+                    cursor.execute("CALL insert_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                       [name, target_audience, experience_years, reach_range, phone, 
+                        address_id, website, mail, industry_id, schedule, 
+                        copy_languages, client_id, mission, vision, values])
             
             return Response({'message': 'Business created.'}, status=status.HTTP_201_CREATED)
 
@@ -52,9 +53,11 @@ class BusinessCreateView(APIView):
             vision = request.data.get('vision')
             values = request.data.get('values')
 
-            call_update_business(business_id, name, target_audience, experience_years, reach_range, phone, 
-                             address_id, website, mail, industry_id, schedule, copy_languages, 
-                             client_id, mission, vision, values)
+            with connection.cursor() as cursor:
+                      cursor.execute("CALL update_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+                       [business_id, name, target_audience, experience_years, reach_range, phone, 
+                        address_id, website, mail, industry_id, schedule, 
+                        copy_languages, client_id, mission, vision, values])
 
             return Response({'message': 'Business updated.'}, status=status.HTTP_200_OK)
 

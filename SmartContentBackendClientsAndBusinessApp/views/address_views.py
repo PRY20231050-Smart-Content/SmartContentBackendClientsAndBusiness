@@ -1,10 +1,9 @@
 # views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from ..db_operations import call_insert_address, call_update_address, call_delete_address
 from django.http import HttpResponse
 from rest_framework import status
-
+from django.db import connection
 class AddressCreateView(APIView):
     def post(self, request):
         try:
@@ -12,7 +11,9 @@ class AddressCreateView(APIView):
             country = request.data.get('country')
             postal_code = request.data.get('postal_code')
             street = request.data.get('street')
-            call_insert_address(city, country, postal_code, street)
+
+            with connection.cursor() as cursor:
+              cursor.execute("CALL insert_address(%s, %s, %s, %s)", [city, country, postal_code, street])
             
             return Response({'message': 'Address created.'}, status=status.HTTP_201_CREATED)
 
@@ -26,7 +27,8 @@ class AddressCreateView(APIView):
             country = request.data.get('country')
             postal_code = request.data.get('postal_code')
             street = request.data.get('street')
-            call_update_address(id, city, country, postal_code, street)
+            with connection.cursor() as cursor:
+                  cursor.execute("CALL update_address(%s, %s, %s, %s, %s)", [id, city, country, postal_code, street])
             
             return Response({'message': 'Address updated.'}, status=status.HTTP_200_OK)
 
@@ -36,7 +38,9 @@ class AddressCreateView(APIView):
     def delete(self, request):
         try:
             id = request.data.get('id')
-            call_delete_address(id)
+            with connection.cursor() as cursor:
+                   cursor.execute("CALL delete_address(%s)", [id])
+
             
             return Response({'message': 'Address deleted.'}, status=status.HTTP_200_OK)
 

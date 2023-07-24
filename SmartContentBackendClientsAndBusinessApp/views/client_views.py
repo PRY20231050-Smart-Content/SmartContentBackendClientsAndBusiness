@@ -1,9 +1,12 @@
 # views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from ..db_operations import call_insert_client,call_update_client
 from django.http import HttpResponse
 from rest_framework import status
+from django.db import connection
+from django.core.paginator import Paginator, Page
+from rest_framework.decorators import api_view
+
 
 class ClientCreateView(APIView):
     def post(self, request):
@@ -16,8 +19,9 @@ class ClientCreateView(APIView):
             profile_picture = request.data.get('profile_picture')
             user_id = request.data.get('user_id')
 
-            call_insert_client(first_name, last_name, address_id, email, phone, profile_picture, user_id)
-            
+            with connection.cursor() as cursor:
+                 cursor.execute("CALL insert_client(%s, %s, %s, %s, %s, %s, %s)", [first_name, last_name, address_id, email, phone, profile_picture, user_id])
+
             return Response({'message': 'Client created.'}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
@@ -35,10 +39,71 @@ class ClientCreateView(APIView):
             profile_picture = request.data.get('profile_picture')
             user_id = request.data.get('user_id')
 
-            call_update_client(client_id, first_name, last_name, address_id, email, phone, profile_picture, user_id)
+            with connection.cursor() as cursor:
+                 cursor.execute("CALL update_client(%s, %s, %s, %s, %s, %s, %s, %s)", [client_id, first_name, last_name, address_id, email, phone, profile_picture, user_id])
             
             return Response({'message': 'Client updated.'}, status=status.HTTP_200_OK)
 
         except Exception as e:
             # Puedes registrar la excepción aquí para depurarla posteriormente
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+   
+    def get(self, request):
+        page = request.query_params.get('page', 1)
+        perpage = request.query_params.get('perPage', 10)
+        sortby = request.query_params.get('sortBy', 'first_name')
+        sortOrder = request.query_params.get('sortOrder', 'ASC')
+        filterDateFrom = request.query_params.get('date_from')
+        filterDateTo = request.query_params.get('date_to')
+        text = request.query_params.get('text', '')
+
+
+       
+ 
+
+        params = [
+            
+            text,
+            filterDateFrom,
+            filterDateTo,
+            perpage,
+            page,
+            sortby,
+            sortOrder
+            
+        ]
+      
+        try:
+            with connection.cursor() as cursor:
+                cursor.callproc('sp_get_clients', params)
+                data = cursor.fetchall()
+                
+                
+
+            if data:
+                paginator = Paginator(data, perpage)
+                data_page = paginator.get_page(page)
+
+                result = {
+                    'current_page': data_page.number,
+                    'data': list(data_page),
+                    'first_page_url': request.build_absolute_uri(f'?page=1'),
+                    'from': data_page.start_index(),
+                    'last_page': data_page.paginator.num_pages,
+                    'last_page_url': request.build_absolute_uri(f'?page={data_page.paginator.num_pages}'),
+                    'next_page_url': request.build_absolute_uri(data_page.next_page_number()) if data_page.has_next() else None,
+                    'path': request.path,
+                    'per_page': perpage,
+                    'prev_page_url': request.build_absolute_uri(data_page.previous_page_number()) if data_page.has_previous() else None,
+                    'to': data_page.end_index(),
+                    'total': data[0][-1]  # as the total count is the last element of each row
+                }
+
+                return Response(result, status=status.HTTP_200_OK)
+
+            return Response({'message': 'No data found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

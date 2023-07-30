@@ -82,9 +82,20 @@ class ClientCreateView(APIView):
                 paginator = Paginator(data, perpage)
                 data_page = paginator.get_page(page)
 
+
+                formatted_data = [
+                 {
+                    'id': row[0],
+                    'first_name': row[1],
+                    'created_at': row[2],
+                    'updated_at': row[3],
+                    'cc': row[4]
+                 } for row in data
+                ]
+
                 result = {
                     'current_page': data_page.number,
-                    'data': list(data_page),
+                    'data': formatted_data,
                     'first_page_url': request.build_absolute_uri(f'?page=1'),
                     'from': data_page.start_index(),
                     'last_page': data_page.paginator.num_pages,

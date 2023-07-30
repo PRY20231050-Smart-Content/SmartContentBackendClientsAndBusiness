@@ -25,30 +25,30 @@ SECRET_KEY = 'django-insecure-ddurv9%g)*g*m-gxt^_!u0%4q+6l*!r3j0hj+0r#)-h7d)s*@m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','52.146.67.219','20.246.217.80', '*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','52.146.67.219','20.246.217.80', '*','http://localhost:8080']
+CORS_ALLOWED_ORIGINS = [
+   'http://localhost:8080'
+]
+CORS_ALLOW_ALL_ORIGINS = True
 
 
-# Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
      'rest_framework',
-     'SmartContentBackendClientsAndBusinessApp'
+     'SmartContentBackendClientsAndBusinessApp',
+       'corsheaders',
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'SmartContentBackendClientsAndBusiness.urls'

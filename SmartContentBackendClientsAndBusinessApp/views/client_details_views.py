@@ -13,7 +13,8 @@ class ClientCreateViewDetails(APIView):
     def get(self, request, client_id):
         try:
             with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM clients WHERE id = %s", [client_id])
+                cursor.execute("""SELECT clients.*, businesses.*  FROM clients LEFT JOIN businesses ON clients.id = businesses.client_id WHERE clients.id = %s """, [client_id])
+
                 data = cursor.fetchone()
 
             if data:

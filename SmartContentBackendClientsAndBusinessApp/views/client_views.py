@@ -6,7 +6,7 @@ from rest_framework import status
 from django.db import connection
 from django.core.paginator import Paginator, Page
 from rest_framework.decorators import api_view
-
+import json
 
 class ClientCreateView(APIView):
     def post(self, request):
@@ -89,7 +89,8 @@ class ClientCreateView(APIView):
                     'first_name': row[1],
                     'created_at': row[2],
                     'updated_at': row[3],
-                    'cc': row[4]
+                    'cc': row[4],
+                    'business_id': row[5],
                  } for row in data
                 ]
 

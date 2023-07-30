@@ -22,23 +22,25 @@ class Migration(migrations.Migration):
             IN order_by VARCHAR(255),
             IN orden VARCHAR(4))
             BEGIN                            
-                DECLARE cc INT;
+               DECLARE cc INT;
 
                 SET npage=perpage*(npage-1);
-
+               
                 SELECT COUNT(*) INTO cc
                 FROM clients c
-                WHERE c.deleted_at IS NULL
+    			WHERE c.deleted_at IS NULL
                 AND IF(date_from IS NULL OR date_to IS NULL, TRUE, (DATE(c.created_at) >= date_from AND DATE(c.created_at) <= date_to))
                 AND IF(_text IS NULL OR _text= '', TRUE, (c.first_name LIKE CONCAT('%',_text,'%')));
 
                 SET @query = CONCAT("
-                    SELECT c.id, c.first_name, c.created_at, c.updated_at, ", cc ," cc 
+                    SELECT c.id, c.first_name, c.created_at, c.updated_at, ", cc ," cc,
+                    JSON_ARRAYAGG(JSON_OBJECT('id', b.id, 'name', b.name)) AS businesses
                     FROM clients c
+                    LEFT JOIN businesses b ON c.id = b.client_id and b.deleted_at is null
                     WHERE c.deleted_at IS NULL",
                     IF (date_from IS NULL OR date_to IS NULL, '', CONCAT(" AND DATE(c.created_at) >= '",date_from, "' AND DATE(c.created_at) <= '", date_to, "'")),
                     IF(_text IS NULL OR _text = '', '', CONCAT(" AND c.first_name LIKE '%",_text,"%'")),
-                    " ORDER BY c.", order_by, " ", orden , " LIMIT ",perpage," OFFSET ",npage, ";");
+                    " GROUP BY c.id ORDER BY c.", order_by, " ", orden , " LIMIT ",perpage," OFFSET ",npage, ";");
 
                     PREPARE stmt FROM @query;
                     EXECUTE stmt;

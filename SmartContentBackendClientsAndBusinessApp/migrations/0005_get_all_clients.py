@@ -22,10 +22,12 @@ class Migration(migrations.Migration):
             IN order_by VARCHAR(255),
             IN orden VARCHAR(4))
             BEGIN                            
-               DECLARE cc INT;
+             DECLARE cc INT;
 
                 SET npage=perpage*(npage-1);
-               
+
+
+
                 SELECT COUNT(*) INTO cc
                 FROM clients c
     			WHERE c.deleted_at IS NULL
@@ -34,9 +36,18 @@ class Migration(migrations.Migration):
 
                 SET @query = CONCAT("
                     SELECT c.id, c.first_name, c.created_at, c.updated_at, ", cc ," cc,
-                    JSON_ARRAYAGG(JSON_OBJECT('id', b.id, 'name', b.name)) AS businesses
+                    JSON_ARRAYAGG(JSON_OBJECT('id', b.id, 'name', b.name,'service_name',i.name,'schedule',b.schedule,'created_at',b.created_at
+                    ,'website',b.website,'target_audience',b.target_audience,'experience_years',b.experience_years
+                    ,'reach_range',b.reach_range,'phone',b.phone,'mail',b.mail,'copy_languages',b.copy_languages
+                    ,'mission',b.mission,'vision',b.vision,'values',b.values,'address_id',b.address_id
+                    ,'client_id',b.client_id,'industry_id',b.industry_id,'deleted_at',b.deleted_at,'updated_at',b.updated_at
+                    )) AS businesses,
+                    c.last_name ,c.email ,c.phone,concat_Ws(' ',a.street,a.country,a.city,a.postal_code) address,a.id address_id,
+                    c.profile_picture
                     FROM clients c
                     LEFT JOIN businesses b ON c.id = b.client_id and b.deleted_at is null
+                    left join address a on c.address_id=a.id
+					left join industries i on i.id=b.industry_id
                     WHERE c.deleted_at IS NULL",
                     IF (date_from IS NULL OR date_to IS NULL, '', CONCAT(" AND DATE(c.created_at) >= '",date_from, "' AND DATE(c.created_at) <= '", date_to, "'")),
                     IF(_text IS NULL OR _text = '', '', CONCAT(" AND c.first_name LIKE '%",_text,"%'")),

@@ -91,6 +91,13 @@ class ClientCreateView(APIView):
                     'updated_at': row[3],
                     'cc': row[4],
                     'business_id': row[5],
+                    'last_name': row[6],
+                    'email': row[7],
+                    'phone': row[8],
+                    'address' : row[9],
+                    'address_id' : row[10],
+                    'profile_picture': row[11],
+                    
                  } for row in data
                 ]
 

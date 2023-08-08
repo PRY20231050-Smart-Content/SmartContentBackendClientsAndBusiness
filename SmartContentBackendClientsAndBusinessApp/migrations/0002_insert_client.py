@@ -27,5 +27,15 @@ class Migration(migrations.Migration):
            INSERT INTO clients(first_name, last_name, address_id, email, phone, profile_picture, user_id,created_at)
                 VALUES (p_first_name, p_last_name, p_address_id, p_email, p_phone, p_profile_picture, p_user_id,now());
             END 
+            
+             set @id = @@identity;
+               
+                	SELECT c.id, c.first_name, c.created_at, c.updated_at,
+                    c.last_name ,c.email ,c.phone,concat_Ws(' ',a.street,a.country,a.city,a.postal_code) address,a.id address_id,
+                    c.profile_picture
+                    FROM clients c
+                    LEFT JOIN businesses b ON c.id = b.client_id and b.deleted_at is null
+                    left join address a on c.address_id=a.id
+                    WHERE c.deleted_at IS null and c.id =@id;
         """)
     ]

@@ -14,8 +14,14 @@ class AddressCreateView(APIView):
 
             with connection.cursor() as cursor:
               cursor.execute("CALL insert_address(%s, %s, %s, %s)", [city, country, postal_code, street])
-            
-            return Response({'message': 'Address created.'}, status=status.HTTP_201_CREATED)
+              data = cursor.fetchone()
+
+            if data:
+                address_details = {
+                    'id': data[0],
+                }
+                
+            return Response({'message': 'Address created.','id': address_details    }, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

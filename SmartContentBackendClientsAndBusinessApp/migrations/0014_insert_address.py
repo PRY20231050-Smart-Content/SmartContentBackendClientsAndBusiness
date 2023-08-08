@@ -19,8 +19,11 @@ class Migration(migrations.Migration):
             IN p_street VARCHAR(255)
           )
           BEGIN
-            INSERT INTO address(city, country, postal_code, street,created_at)
+           INSERT INTO address(city, country, postal_code, street,created_at)
             VALUES (p_city, p_country, p_postal_code, p_street,now());
+            set @id = @@identity;
+           
+           select @id;
           END;
         """)
     ]

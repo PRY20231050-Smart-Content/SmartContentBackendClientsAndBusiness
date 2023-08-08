@@ -21,8 +21,23 @@ class ClientCreateView(APIView):
 
             with connection.cursor() as cursor:
                  cursor.execute("CALL insert_client(%s, %s, %s, %s, %s, %s, %s)", [first_name, last_name, address_id, email, phone, profile_picture, user_id])
+                 data = cursor.fetchone()
 
-            return Response({'message': 'Client created.'}, status=status.HTTP_201_CREATED)
+            if data:
+                client_details = {
+                    'id': data[0],
+                    'first_name': data[1],
+                    'created_at': data[2],
+                    'updated_at': data[3],
+                    'last_name': data[4],
+                    'email': data[5],
+                    'phone': data[6],
+                    'address' : data[7],
+                    'address_id' : data[8],
+                    'profile_picture': data[9],
+                }
+
+            return Response({'message': 'Client created.','data': client_details}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             # Puedes registrar la excepción aquí para depurarla posteriormente

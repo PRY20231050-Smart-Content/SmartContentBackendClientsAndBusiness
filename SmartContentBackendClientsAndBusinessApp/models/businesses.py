@@ -6,7 +6,7 @@ class Business(models.Model):
     target_audience = models.TextField()
     experience_years = models.CharField(max_length=360)
     reach_range = models.IntegerField()
-    phone = models.IntegerField()
+    phone = models.TextField()
     address = models.ForeignKey('Address', on_delete=models.CASCADE)
     website = models.CharField(max_length=360)
     mail = models.EmailField(max_length=100)

@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             IN p_target_audience TEXT,
             IN p_experience_years VARCHAR(360),
             IN p_reach_range INT,
-            IN p_phone BIGINT,
+            IN p_phone VARCHAR(360),
             IN p_address_id INT,
             IN p_website VARCHAR(360),
             IN p_mail VARCHAR(100),

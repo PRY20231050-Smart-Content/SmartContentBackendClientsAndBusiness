@@ -34,4 +34,5 @@ urlpatterns = [
     path('create-business/', BusinessCreateView.as_view()),
     path('update-business/', BusinessCreateView.as_view()),
     path('get-client-by-id/', ClientCreateViewDetails.as_view()),
+    path('get-industries/', IndustryCreateView.as_view()),
 ]

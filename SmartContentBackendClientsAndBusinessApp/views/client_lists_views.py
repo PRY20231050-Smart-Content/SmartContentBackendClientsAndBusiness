@@ -73,7 +73,7 @@ class ClientListView(APIView):
                     'per_page': perpage,
                     'prev_page_url': request.build_absolute_uri(data_page.previous_page_number()) if data_page.has_previous() else None,
                     'to': data_page.end_index(),
-                    'total': data[0][-1]  # as the total count is the last element of each row
+                    'total': data[0][4]  # as the total count is the last element of each row
                 }
 
                 return Response(result, status=status.HTTP_200_OK)

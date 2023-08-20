@@ -30,7 +30,7 @@ class ClientListView(APIView):
             sortOrder
             
         ]
-      
+        sub_total = 0
         try:
             with connection.cursor() as cursor:
                 cursor.callproc('sp_get_clients', params)
@@ -39,6 +39,8 @@ class ClientListView(APIView):
 
 
             if data:
+                for row in data:
+                 sub_total += row[4]
                 paginator = Paginator(data, perpage)
                 data_page = paginator.get_page(page)
 
@@ -62,10 +64,10 @@ class ClientListView(APIView):
                 ]
 
                 result = {
-                    'current_page': data_page.number,
+                    'current_page': page,
                     'data': formatted_data,
                     'first_page_url': request.build_absolute_uri(f'?page=1'),
-                    'from': data_page.start_index(),
+                    'from': (data_page.number - 1) * perpage + 1 if data_page.number > 1 else 1,
                     'last_page': data_page.paginator.num_pages,
                     'last_page_url': request.build_absolute_uri(f'?page={data_page.paginator.num_pages}'),
                     'next_page_url': request.build_absolute_uri(data_page.next_page_number()) if data_page.has_next() else None,

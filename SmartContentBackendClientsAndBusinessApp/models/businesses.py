@@ -4,7 +4,7 @@ class Business(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=360)
     target_audience = models.TextField()
-    experience_years = models.CharField(max_length=360)
+    facebook_page = models.CharField(max_length=360)
     reach_range = models.IntegerField()
     phone = models.TextField()
     address = models.ForeignKey('Address', on_delete=models.CASCADE)
@@ -17,7 +17,7 @@ class Business(models.Model):
     client = models.ForeignKey('Client', on_delete=models.CASCADE)
     mission = models.TextField()
     vision = models.TextField()
-    values = models.TextField()
+    logo_carpet = models.TextField()
     updated_at = models.DateTimeField(null=True)
     deleted_at = models.DateTimeField(null=True)
     class Meta:

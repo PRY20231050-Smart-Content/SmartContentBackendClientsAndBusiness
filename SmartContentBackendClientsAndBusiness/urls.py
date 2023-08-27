@@ -22,6 +22,7 @@ from SmartContentBackendClientsAndBusinessApp.views.business_views import Busine
 from SmartContentBackendClientsAndBusinessApp.views.client_details_views import ClientCreateViewDetails
 from SmartContentBackendClientsAndBusinessApp.views.client_lists_views import ClientListView
 from SmartContentBackendClientsAndBusinessApp.views.uploud_files_views import UploadFileView
+from SmartContentBackendClientsAndBusinessApp.views.services_views import ServicesCreatView
 
 
 urlpatterns = [
@@ -37,4 +38,6 @@ urlpatterns = [
     path('get-client-by-id/', ClientCreateViewDetails.as_view()),
     path('get-industries/', IndustryCreateView.as_view()),
     path('upload-copies/', UploadFileView.as_view()),
+    path('get-all-services/', ServicesCreatView.as_view()),
+    path('create-service/', ServicesCreatView.as_view()),
 ]

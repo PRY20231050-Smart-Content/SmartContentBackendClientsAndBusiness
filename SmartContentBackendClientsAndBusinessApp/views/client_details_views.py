@@ -16,13 +16,13 @@ class ClientCreateViewDetails(APIView):
             with connection.cursor() as cursor:
                 cursor.execute("""SELECT c.id, c.first_name, c.created_at, c.updated_at, ", cc ," cc,
                     JSON_ARRAYAGG(JSON_OBJECT('id', b.id, 'name', b.name,'service_name',i.name,'schedule',b.schedule,'created_at',b.created_at
-                    ,'website',b.website,'target_audience',b.target_audience,'experience_years',b.experience_years
-                    ,'reach_range',b.reach_range,'phone',b.phone,'mail',b.mail,'copy_languages',b.copy_languages
-                    ,'mission',b.mission,'vision',b.vision,'values',b.values,'address_id',b.address_id
+                    ,'website',b.website,'target_audience',b.target_audience,'reach_range',b.reach_range,'phone',b.phone,'mail',b.mail,'copy_languages',b.copy_languages
+                    ,'mission',b.mission,'vision',b.vision,'address_id',b.address_id
                     ,'client_id',b.client_id,'industry_id',b.industry_id,'deleted_at',b.deleted_at,'updated_at',b.updated_at
                     )) AS businesses,
                     c.last_name ,c.email ,c.phone,concat_Ws(' ',a.street,a.country,a.city,a.postal_code) address,a.id address_id,
-                    c.profile_picture  FROM clients c
+                    c.profile_picture
+                    FROM clients c
                     LEFT JOIN businesses b ON c.id = b.client_id and b.deleted_at is null
                     left join address a on c.address_id=a.id
 					left join industries i on i.id=b.industry_id

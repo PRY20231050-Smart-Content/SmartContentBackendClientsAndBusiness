@@ -11,7 +11,8 @@ class Client(models.Model):
     updated_at = models.DateTimeField(null=True)
     deleted_at = models.DateTimeField(null=True)
     profile_picture = models.CharField(max_length=255)  # Considera usar ImageField si es una imagen
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE, db_column='user_id')
+    #quiero poner una tabla que no eta en mi proyecto
+    user_id =   models.IntegerField()
 
     class Meta:
         db_table = 'clients'

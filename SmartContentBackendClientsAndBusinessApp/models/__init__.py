@@ -6,3 +6,5 @@ from .businesses_address_preferences import BusinessAddressPreferences
 from .businesses import Business
 from .industries import Industry
 from .copies import Copies
+from .services import Service
+from .services_business import ServiceBusiness

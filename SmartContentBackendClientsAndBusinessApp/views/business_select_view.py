@@ -12,7 +12,7 @@ class BusinessSelectView(APIView):
       def post(self, request):
         try:
             #pedir id de client
-            client_id = request.data.get('client_id')
+            client_id = request.data.get('clientId')
             with connection.cursor() as cursor:
                 cursor.execute("""SELECT b.id, b.name, b.created_at
                 FROM businesses b where b.client_id = %s """, [client_id])

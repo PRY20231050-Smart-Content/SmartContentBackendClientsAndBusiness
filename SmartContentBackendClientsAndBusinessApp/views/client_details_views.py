@@ -18,7 +18,7 @@ class ClientCreateViewDetails(APIView):
                     JSON_ARRAYAGG(JSON_OBJECT('id', b.id, 'name', b.name,'service_name',i.name,'schedule',b.schedule,'created_at',b.created_at
                     ,'website',b.website,'target_audience',b.target_audience,'phone',b.phone,'mail',b.mail
                     ,'mission',b.mission,'vision',b.vision,'address',a.street,'facebook_page',b.facebook_page
-                    ,'client_id',b.client_id,'industry_id',b.industry_id,'deleted_at',b.deleted_at,'updated_at',b.updated_at
+                    ,'client_id',b.client_id,'industry_id',b.industry_id,'deleted_at',b.deleted_at,'updated_at',b.updated_at,'services', services.services_json 
                     )) AS businesses,
                     c.last_name ,c.email ,c.phone,concat_Ws(' ',a.street,a.country,a.city,a.postal_code) address,a.id address_id,
                     c.profile_picture
@@ -26,8 +26,14 @@ class ClientCreateViewDetails(APIView):
                     LEFT JOIN businesses b ON c.id = b.client_id and b.deleted_at is null
                     left join address a on c.address_id=a.id
 					left join industries i on i.id=b.industry_id
-                    left join services_business sb on sb.business_id=b.id
-                    left join services s on s.id =sb.business_id 
+                    LEFT JOIN (
+                    SELECT
+                    sb.business_id,
+                    JSON_ARRAYAGG(JSON_OBJECT('id', s.id, 'name', s.name)) AS services_json
+                    FROM services_business sb
+                    LEFT JOIN services s ON sb.service_id = s.id
+                    GROUP BY sb.business_id
+                    ) AS services ON services.business_id = b.id
                     WHERE c.deleted_at IS NULL and c.id = %s """, [client_id])
 
                 data = cursor.fetchone()

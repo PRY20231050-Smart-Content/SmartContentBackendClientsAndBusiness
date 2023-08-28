@@ -37,8 +37,7 @@ class Migration(migrations.Migration):
                 SET @query = CONCAT("
                     SELECT c.id, c.first_name, c.created_at, c.updated_at, ", cc ," cc,
                     JSON_ARRAYAGG(JSON_OBJECT('id', b.id, 'name', b.name,'service_name',i.name,'schedule',b.schedule,'created_at',b.created_at
-                    ,'website',b.website,'target_audience',b.target_audience
-                    ,'reach_range',b.reach_range,'phone',b.phone,'mail',b.mail,'copy_languages',b.copy_languages
+                    ,'website',b.website,'target_audience',b.target_audience,'phone',b.phone,'mail',b.mail
                     ,'mission',b.mission,'vision',b.vision,'address_id',b.address_id
                     ,'client_id',b.client_id,'industry_id',b.industry_id,'deleted_at',b.deleted_at,'updated_at',b.updated_at
                     )) AS businesses,

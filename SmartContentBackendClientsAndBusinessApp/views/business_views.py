@@ -3,32 +3,33 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import connection
+import json
+
 class BusinessCreateView(APIView):
     def post(self, request):
         try:
             name = request.data.get('name')
-            target_audience = request.data.get('target_audience')
-            experience_years = request.data.get('experience_years')
-            reach_range = request.data.get('reach_range')
-            phone = request.data.get('phone')
+            facebook_page = request.data.get('facebook_page')
+            services = request.data.get('services')
+            phone = request.data.get('phone')         
             address_id = request.data.get('address_id')
             website = request.data.get('website')
             mail = request.data.get('mail')
             industry_id = request.data.get('industry_id')
-            schedule = request.data.get('schedule')
-            copy_languages = request.data.get('copy_languages')
+            schedule = request.data.get('schedule')        
+            target_audience = request.data.get('target_audience')
             client_id = request.data.get('client_id')
             mission = request.data.get('mission')
             vision = request.data.get('vision')
-            values = request.data.get('values')
-
-            with connection.cursor() as cursor:
-                    cursor.execute("CALL insert_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
-                       [name, target_audience, experience_years, reach_range, phone, 
-                        address_id, website, mail, industry_id, schedule, 
-                        copy_languages, client_id, mission, vision, values])
+        
             
-            return Response({'message': 'Business created.'}, status=status.HTTP_201_CREATED)
+            
+            
+            with connection.cursor() as cursor:
+                    cursor.execute("CALL insert_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)",
+                       [name,facebook_page,json.dumps(services),phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision ])
+                    namesss = cursor.fetchall()
+            return Response({'message': namesss}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
             # You can log the exception here for debugging later
@@ -38,16 +39,15 @@ class BusinessCreateView(APIView):
         try:
             business_id = request.data.get('business_id')
             name = request.data.get('name')
-            target_audience = request.data.get('target_audience')
-            experience_years = request.data.get('experience_years')
-            reach_range = request.data.get('reach_range')
-            phone = request.data.get('phone')
+            facebook_page = request.data.get('facebook_page')
+            services = request.data.get('services')
+            phone = request.data.get('phone')         
             address_id = request.data.get('address_id')
             website = request.data.get('website')
             mail = request.data.get('mail')
             industry_id = request.data.get('industry_id')
-            schedule = request.data.get('schedule')
-            copy_languages = request.data.get('copy_languages')
+            schedule = request.data.get('schedule')        
+            target_audience = request.data.get('target_audience')
             client_id = request.data.get('client_id')
             mission = request.data.get('mission')
             vision = request.data.get('vision')
@@ -55,9 +55,7 @@ class BusinessCreateView(APIView):
 
             with connection.cursor() as cursor:
                       cursor.execute("CALL update_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
-                       [business_id, name, target_audience, experience_years, reach_range, phone, 
-                        address_id, website, mail, industry_id, schedule, 
-                        copy_languages, client_id, mission, vision, values])
+                       [business_id, name, facebook_page,services,phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision,values ])
 
             return Response({'message': 'Business updated.'}, status=status.HTTP_200_OK)
 

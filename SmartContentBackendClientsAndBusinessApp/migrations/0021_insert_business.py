@@ -14,28 +14,68 @@ class Migration(migrations.Migration):
             DROP PROCEDURE IF EXISTS insert_business;
 
             CREATE PROCEDURE insert_business(
-            IN p_name VARCHAR(360),
-            IN p_target_audience TEXT,
-            IN p_experience_years VARCHAR(360),
-            IN p_reach_range INT,
-            IN p_phone VARCHAR(360),
-            IN p_address_id INT,
-            IN p_website VARCHAR(360),
-            IN p_mail VARCHAR(100),
-            IN p_industry_id INT,
-            IN p_schedule VARCHAR(360),
-            IN p_copy_languages VARCHAR(100),
-            IN p_client_id INT,
-            IN p_mission TEXT,
-            IN p_vision TEXT,
-            IN p_values TEXT)
+           IN p_name VARCHAR(360),
+           IN p_facebook_page VARCHAR(360),
+           IN p_services json,  
+           IN p_phone VARCHAR(360),
+           IN p_address_id INT,
+           IN p_website VARCHAR(360),
+           IN p_mail VARCHAR(100),
+           IN p_industry_id INT,
+           IN p_schedule VARCHAR(360),
+           IN p_target_audience TEXT,
+           IN p_client_id INT,
+           IN p_mission TEXT,
+           IN p_vision TEXT)
             BEGIN
-                INSERT INTO businesses(name, target_audience, experience_years, reach_range, phone, 
-                address_id, website, mail, industry_id, schedule, created_at, copy_languages, 
-                client_id, mission, vision, `values`)
-                VALUES (p_name, p_target_audience, p_experience_years, p_reach_range, p_phone, 
-                p_address_id, p_website, p_mail, p_industry_id, p_schedule, now(), p_copy_languages, 
-                p_client_id, p_mission, p_vision, p_values);
+                declare j int default 0;
+    INSERT INTO businesses(
+        name, 
+        target_audience, 
+        facebook_page, 
+        phone, 
+        website, 
+        mail, 
+        schedule, 
+        mission, 
+        vision, 
+        address_id, 
+        client_id, 
+        industry_id, 
+        created_at)
+    VALUES (
+        p_name, 
+        p_target_audience, 
+        p_facebook_page, 
+        p_phone, 
+        p_website, 
+        p_mail, 
+        p_schedule, 
+        p_mission, 
+        p_vision, 
+        p_address_id, 
+        p_client_id, 
+        p_industry_id,
+        NOW()
+    );
+   
+    set @id = @@identity;
+   
+    while j<JSON_LENGTH(p_services) DO
+    
+     set @level_importance = JSON_UNQUOTE(JSON_EXTRACT(p_services,CONCAT('$[',j, '].level_importance')));
+     set @service_id = JSON_UNQUOTE(JSON_EXTRACT(p_services,CONCAT('$[',j, '].id')));
+    
+    
+   INSERT INTO services_business(level_importance,business_id,service_id)
+    VALUES (
+        1, 
+        @id, 
+        @service_id
+    );
+   
+   set j = j + 1;
+            end while;
             END
         """)
     ]

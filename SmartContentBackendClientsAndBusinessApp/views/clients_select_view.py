@@ -11,7 +11,7 @@ from django.core.paginator import Paginator, Page
 class ClientSelectView(APIView):
       def post(self, request):
         try:
-            user_id = request.data.get('user_id')
+            user_id = request.data.get('userId')
             with connection.cursor() as cursor:
                 cursor.execute("""SELECT c.id, concat(c.first_name,' ',c.last_name) as name, c.created_at
                 FROM clients c where c.user_id = %s """, [user_id])

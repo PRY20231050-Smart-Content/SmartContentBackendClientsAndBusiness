@@ -10,6 +10,8 @@ class ServiceBusiness(models.Model):
     business_id = models.ForeignKey('Business', on_delete=models.CASCADE, db_column='business_id')
     service_id = models.ForeignKey('Service', on_delete=models.CASCADE, db_column='service_id')
     level_importance = models.IntegerField()
+    deleted_at = models.DateTimeField(null=True)
+    
 
     class Meta:
         db_table = 'services_business'

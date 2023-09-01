@@ -51,13 +51,13 @@ class BusinessCreateView(APIView):
             client_id = request.data.get('client_id')
             mission = request.data.get('mission')
             vision = request.data.get('vision')
-            values = request.data.get('values')
+        
 
             with connection.cursor() as cursor:
-                      cursor.execute("CALL update_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
-                       [business_id, name, facebook_page,services,phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision,values ])
-
-            return Response({'message': 'Business updated.'}, status=status.HTTP_200_OK)
+                      cursor.execute("CALL update_business(%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)", 
+                       [business_id, name, facebook_page,json.dumps(services),phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision ])
+                      namesss = cursor.fetchone()
+            return Response({'message': namesss}, status=status.HTTP_200_OK)
 
         except Exception as e:
             # You can log the exception here for debugging later

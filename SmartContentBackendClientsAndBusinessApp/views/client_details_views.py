@@ -31,9 +31,9 @@ class ClientCreateViewDetails(APIView):
                     sb.business_id,
                     JSON_ARRAYAGG(JSON_OBJECT('id', s.id, 'name', s.name)) AS services_json
                     FROM services_business sb
-                    LEFT JOIN services s ON sb.service_id = s.id
+                    JOIN services s ON sb.service_id = s.id and sb.deleted_at is null
                     GROUP BY sb.business_id
-                    ) AS services ON services.business_id = b.id
+                    ) AS services ON services.business_id = b.id 
                     WHERE c.deleted_at IS NULL and c.id = %s """, [client_id])
 
                 data = cursor.fetchone()

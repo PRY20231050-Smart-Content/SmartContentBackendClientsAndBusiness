@@ -27,8 +27,8 @@ class Migration(migrations.Migration):
            IN p_mission TEXT,
            IN p_vision TEXT)
            
-           BEGIN
-           declare j int default 0;
+  BEGIN
+    declare j int default 0;
 		  declare i int default 0;
 	
                UPDATE businesses
@@ -85,7 +85,7 @@ END WHILE;
     
     set @validar = (select count(*) from services_business sb where sb.service_id = @service_id and sb.business_id=@id);
     
-    if(@validar =0) then
+    IF ( @validar =0) then
     
    INSERT INTO services_business(level_importance,business_id,service_id)
     VALUES (
@@ -102,16 +102,21 @@ END WHILE;
                SET @not_deletes = SUBSTRING(@not_deletes, 2);
 
 -- Actualiza la tabla services_business usando la lista de IDs
-SET @sql = CONCAT(/"UPDATE services_business 
+SET @sql = CONCAT('UPDATE services_business 
                    SET deleted_at = NOW() 
                    WHERE business_id = @id 
-                   AND service_id NOT IN (/", @not_deletes, /")/");
+                   AND service_id NOT IN (', @not_deletes, ')');
                    
 -- Ejecuta la consulta dinámica
 PREPARE stmt FROM @sql;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
-           
-           END
+  
+              
+  
+  
+               
+      
+END
     """)
 ]

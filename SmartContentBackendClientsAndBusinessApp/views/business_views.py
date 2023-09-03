@@ -29,7 +29,7 @@ class BusinessCreateView(APIView):
                     cursor.execute("CALL insert_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)",
                        [name,facebook_page,json.dumps(services),phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision ])
                     namesss = cursor.fetchall()
-            return Response({'message': namesss}, status=status.HTTP_201_CREATED)
+            return Response({'message': namesss}, status=status.HTTP_200_OK)
 
         except Exception as e:
             # You can log the exception here for debugging later

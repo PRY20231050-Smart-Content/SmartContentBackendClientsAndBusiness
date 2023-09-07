@@ -28,6 +28,6 @@ class UploadFileView(APIView):
                     # Add other fields from the Excel as needed
                 )
             
-            return Response({'message': 'Archivo Excel procesado correctamente.'})
+            return Response({'message': 'Archivo Excel procesado correctamente.','data':data})
         else:
             return Response({'message': 'No se ha proporcionado archivo o business_id.'})

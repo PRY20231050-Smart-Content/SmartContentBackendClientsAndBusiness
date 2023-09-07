@@ -13,9 +13,17 @@ class BusinessSelectView(APIView):
         try:
             #pedir id de client
             client_id = request.data.get('clientId')
+            where_condition = "1 = 1"
+
+            if client_id is not None:
+                where_condition = f"b.client_id = {client_id}"
+
             with connection.cursor() as cursor:
-                cursor.execute("""SELECT b.id, b.name, b.created_at
-                FROM businesses b where b.client_id = %s """, [client_id])
+                cursor.execute( f"""
+                    SELECT b.id, b.name, b.created_at
+                    FROM businesses b
+                    WHERE b.client_id = %s AND {where_condition}
+                """, [client_id])
                 data = cursor.fetchall()
             if data:
                 business = [
@@ -29,7 +37,7 @@ class BusinessSelectView(APIView):
 
            
                 return Response(business, status=status.HTTP_200_OK)
-            return Response({'message': 'No businesses found.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response([], status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -69,14 +69,14 @@ class ClientListView(APIView):
                     'current_page': page,
                     'data': formatted_data,
                     'first_page_url': request.build_absolute_uri(f'?page=1'),
-                    'from': (data_page.number - 1) * perpage + 1 if data_page.number > 1 else 1,
+                    'from':  ((page - 1) * perpage) + 1 if page != 1 else 1,
                     'last_page': data_page.paginator.num_pages,
                     'last_page_url': request.build_absolute_uri(f'?page={data_page.paginator.num_pages}'),
                     'next_page_url': request.build_absolute_uri(data_page.next_page_number()) if data_page.has_next() else None,
                     'path': request.path,
                     'per_page': perpage,
                     'prev_page_url': request.build_absolute_uri(data_page.previous_page_number()) if data_page.has_previous() else None,
-                    'to': data_page.end_index(),
+                    'to': min((((page - 1) * perpage) + 1 if page != 1 else 1) + perpage - 1,data[0][4]),
                     'total': data[0][4]  # as the total count is the last element of each row
                 }
 

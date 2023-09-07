@@ -18,7 +18,8 @@ class ClientListView(APIView):
         filterDateFrom = request.data.get('date_from')
         filterDateTo = request.data.get('date_to')
         text = request.data.get('text', '')
-   
+        user_id = request.data.get('user_id')
+ 
         params = [
             
             text,
@@ -27,7 +28,8 @@ class ClientListView(APIView):
             perpage,
             page,
             sortby,
-            sortOrder
+            sortOrder,
+            user_id
             
         ]
         sub_total = 0

@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('SmartContentBackendClientsAndBusinessApp', '0004_delete_client'),
+        ('SmartContentBackendClientsAndBusinessApp', '0045_update_business'),
     ]
 
     operations = [
@@ -20,7 +20,9 @@ class Migration(migrations.Migration):
             IN perpage INT,
             IN npage INT,
             IN order_by VARCHAR(255),
-            IN orden VARCHAR(4))
+            IN orden VARCHAR(4),
+            IN _user_id INT)
+            
             BEGIN                            
              DECLARE cc INT;
 
@@ -30,7 +32,7 @@ class Migration(migrations.Migration):
 
                 SELECT COUNT(*) INTO cc
                 FROM clients c
-    			WHERE c.deleted_at IS NULL
+    			WHERE c.deleted_at IS NULL and c.user_id=_user_id
                 AND IF(date_from IS NULL OR date_to IS NULL, TRUE, (DATE(c.created_at) >= date_from AND DATE(c.created_at) <= date_to))
                 AND IF(_text IS NULL OR _text= '', TRUE, (c.first_name LIKE CONCAT('%',_text,'%')));
 
@@ -47,7 +49,7 @@ class Migration(migrations.Migration):
                     LEFT JOIN businesses b ON c.id = b.client_id and b.deleted_at is null
                     left join address a on c.address_id=a.id
 					left join industries i on i.id=b.industry_id
-                    WHERE c.deleted_at IS NULL",
+                    WHERE c.deleted_at IS NULL and c.user_id=_user_id",
                     IF (date_from IS NULL OR date_to IS NULL, '', CONCAT(" AND DATE(c.created_at) >= '",date_from, "' AND DATE(c.created_at) <= '", date_to, "'")),
                     IF(_text IS NULL OR _text = '', '', CONCAT(" AND c.first_name LIKE '%",_text,"%'")),
                     " GROUP BY c.id ORDER BY c.", order_by, " ", orden , " LIMIT ",perpage," OFFSET ",npage, ";");

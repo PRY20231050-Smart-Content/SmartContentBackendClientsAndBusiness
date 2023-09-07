@@ -15,7 +15,7 @@ class UploadFileView(APIView):
         
         if file and business_id:
             data = pd.read_excel(file)
-            print(data)
+          
             
             
             for index, row in data.iterrows():
@@ -23,6 +23,7 @@ class UploadFileView(APIView):
                     copy=row['Copy'],
                     likes=row['Likes'],
                     shared=row['Shared'],
+                    flyer_text=row['Flyer Text'],
                     business_id_id=business_id,
                     # Add other fields from the Excel as needed
                 )

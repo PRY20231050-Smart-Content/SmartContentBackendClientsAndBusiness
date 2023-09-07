@@ -5,6 +5,7 @@ class Copies(models.Model):
     copy = models.TextField(null=True)
     likes = models.TextField(null=True)
     shared = models.TextField(null=True)
+    flyer_text = models.TextField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True)
     deleted_at = models.DateTimeField(null=True)

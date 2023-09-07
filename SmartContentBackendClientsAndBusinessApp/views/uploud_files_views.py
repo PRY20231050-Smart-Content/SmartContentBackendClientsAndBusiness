@@ -15,11 +15,14 @@ class UploadFileView(APIView):
         
         if file and business_id:
             data = pd.read_excel(file)
+            print(data)
+            
             
             for index, row in data.iterrows():
-                copy = Copies.objects.create(
-                    title=row['Title'],  # Use 'Title' instead of 'title'
-                    description=row['Description'],  # Use 'Description' instead of 'description'
+                copys = Copies.objects.create(
+                    copy=row['Copy'],
+                    likes=row['Likes'],
+                    shared=row['Shared'],
                     business_id_id=business_id,
                     # Add other fields from the Excel as needed
                 )

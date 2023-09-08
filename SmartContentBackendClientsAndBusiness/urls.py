@@ -25,6 +25,7 @@ from SmartContentBackendClientsAndBusinessApp.views.uploud_files_views import Up
 from SmartContentBackendClientsAndBusinessApp.views.services_views import ServicesCreatView
 from SmartContentBackendClientsAndBusinessApp.views.business_select_view import BusinessSelectView
 from SmartContentBackendClientsAndBusinessApp.views.clients_select_view import ClientSelectView
+from SmartContentBackendClientsAndBusinessApp.views.business_services_view import BusinessServicesView
 
 
 urlpatterns = [
@@ -44,4 +45,5 @@ urlpatterns = [
     path('create-service/', ServicesCreatView.as_view()),
     path('get-select-clients/', ClientSelectView.as_view()),
     path('get-select-business/', BusinessSelectView.as_view()),
+    path('get-business-services/<int:business_id>/', BusinessServicesView.as_view()),
 ]

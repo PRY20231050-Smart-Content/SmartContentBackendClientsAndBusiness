@@ -56,7 +56,7 @@ class ClientCreateViewDetails(APIView):
 
                 return Response(client_details, status=status.HTTP_200_OK)
 
-            return Response({'message': client_id}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': client_id}, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

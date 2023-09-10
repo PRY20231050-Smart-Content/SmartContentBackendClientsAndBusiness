@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'SmartContentBackendClientsAndBusiness.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'djangodatabase',
+        'NAME': 'tesis',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': 'localhost',   # O la dirección IP o el nombre de dominio si es una base de datos remota

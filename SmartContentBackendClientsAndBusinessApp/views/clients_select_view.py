@@ -28,7 +28,7 @@ class ClientSelectView(APIView):
 
            
                 return Response(clients, status=status.HTTP_200_OK)
-            return Response({'message': 'No clients found.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': 'No clients found.'}, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -78,15 +78,16 @@ WSGI_APPLICATION = 'SmartContentBackendClientsAndBusiness.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tesis',
+        'NAME': 'tesis2',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': 'localhost',   # O la dirección IP o el nombre de dominio si es una base de datos remota
         'PORT': '3306',   # El puerto puede variar, asegúrate de usar el correcto para tu base de datos
-          'OPTIONS': {
-            'charset': 'utf8mb4',  # Usar utf8mb4 para admitir caracteres especiales como emojis.
+    
+      'OPTIONS': {
+            'charset': 'utf8mb4',
         },
-    }
+         }
 }
 
 

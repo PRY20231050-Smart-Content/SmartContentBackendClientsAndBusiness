@@ -43,6 +43,8 @@ INSTALLED_APPS = [
      'rest_framework',
      'SmartContentBackendClientsAndBusinessApp',
        'corsheaders',
+        'storages',
+
 ]
 
 MIDDLEWARE = [
@@ -78,7 +80,7 @@ WSGI_APPLICATION = 'SmartContentBackendClientsAndBusiness.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tesis2',
+        'NAME': 'tesis',
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': 'localhost',   # O la dirección IP o el nombre de dominio si es una base de datos remota
@@ -133,3 +135,12 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AWS_ACCESS_KEY_ID = 'AKIA6BWVK4LFMHWTYIUL'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'amgsoftpre'
+AWS_S3_SIGNATURE_NAME = 's3v4',
+AWS_S3_REGION_NAME = 'us-east-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL =  None
+AWS_S3_VERITY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'

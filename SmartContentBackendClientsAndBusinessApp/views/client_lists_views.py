@@ -6,6 +6,7 @@ from rest_framework import status
 from django.db import connection
 from django.core.paginator import Paginator, Page
 from rest_framework.decorators import api_view
+from SmartContentBackendClientsAndBusinessApp.helpers.upload_file import upload_file, get_file_url
 
 
 class ClientListView(APIView):
@@ -60,7 +61,7 @@ class ClientListView(APIView):
                     'phone': row[8],
                     'address' : row[9],
                     'address_id' : row[10],
-                    'profile_picture': row[11],
+                    'profile_picture': get_file_url(row[11]),
                     
                  } for row in data
                 ]

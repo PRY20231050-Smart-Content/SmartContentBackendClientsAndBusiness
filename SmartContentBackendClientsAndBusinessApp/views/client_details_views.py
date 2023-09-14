@@ -6,7 +6,7 @@ from rest_framework import status
 from django.db import connection
 from django.core.paginator import Paginator, Page
 from rest_framework.decorators import api_view
-
+from SmartContentBackendClientsAndBusinessApp.helpers.upload_file import upload_file, get_file_url
 
 class ClientCreateViewDetails(APIView):
   
@@ -18,7 +18,8 @@ class ClientCreateViewDetails(APIView):
                     JSON_ARRAYAGG(JSON_OBJECT('id', b.id, 'name', b.name,'service_name',i.name,'schedule',b.schedule,'created_at',b.created_at
                     ,'website',b.website,'target_audience',b.target_audience,'phone',b.phone,'mail',b.mail
                     ,'mission',b.mission,'vision',b.vision,'address',a.street,'facebook_page',b.facebook_page
-                    ,'client_id',b.client_id,'industry_id',b.industry_id,'deleted_at',b.deleted_at,'updated_at',b.updated_at,'services', services.services_json 
+                    ,'client_id',b.client_id,'industry_id',b.industry_id,'deleted_at',b.deleted_at,'updated_at',
+                    b.updated_at,'services', services.services_json, 'business_image_url', b.logo_carpet
                     )) AS businesses,
                     c.last_name ,c.email ,c.phone,concat_Ws(' ',a.street,a.country,a.city,a.postal_code) address,a.id address_id,
                     c.profile_picture
@@ -51,7 +52,7 @@ class ClientCreateViewDetails(APIView):
                     'phone': data[8],
                     'address' : data[9],
                     'address_id' : data[10],
-                    'profile_picture': data[11],
+                    'profile_picture': get_file_url(data[11]),
                 }
 
                 return Response(client_details, status=status.HTTP_200_OK)

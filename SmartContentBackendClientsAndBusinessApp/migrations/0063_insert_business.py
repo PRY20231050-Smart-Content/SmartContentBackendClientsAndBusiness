@@ -6,17 +6,17 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('SmartContentBackendClientsAndBusinessApp', '0020_client_deleted_at'),
+        ('SmartContentBackendClientsAndBusinessApp', '0062_update_business'),
     ]
 
     operations = [
         migrations.RunSQL("""
             DROP PROCEDURE IF EXISTS insert_business;
 
-            CREATE PROCEDURE insert_business(
+CREATE PROCEDURE insert_business(
            IN p_name VARCHAR(360),
            IN p_facebook_page VARCHAR(360),
-           IN p_services json,  
+           IN p_services json,
            IN p_phone VARCHAR(360),
            IN p_address_id INT,
            IN p_website VARCHAR(360),
@@ -26,54 +26,61 @@ class Migration(migrations.Migration):
            IN p_target_audience TEXT,
            IN p_client_id INT,
            IN p_mission TEXT,
-           IN p_vision TEXT)
-            BEGIN
+           IN p_vision TEXT,
+           IN p_logo_image VARCHAR(360))
+BEGIN
                 declare j int default 0;
+               
+    IF p_logo_image = '' OR p_logo_image IS NULL THEN
+			SET	p_logo_image = NULL;
+	END IF;
     INSERT INTO businesses(
-        name, 
-        target_audience, 
-        facebook_page, 
-        phone, 
-        website, 
-        mail, 
-        schedule, 
-        mission, 
-        vision, 
-        address_id, 
-        client_id, 
-        industry_id, 
-        created_at)
+        name,
+        target_audience,
+        facebook_page,
+        phone,
+        website,
+        mail,
+        schedule,
+        mission,
+        vision,
+        address_id,
+        client_id,
+        industry_id,
+        created_at,
+        logo_carpet)
     VALUES (
-        p_name, 
-        p_target_audience, 
-        p_facebook_page, 
-        p_phone, 
-        p_website, 
-        p_mail, 
-        p_schedule, 
-        p_mission, 
-        p_vision, 
-        p_address_id, 
-        p_client_id, 
+        p_name,
+        p_target_audience,
+        p_facebook_page,
+        p_phone,
+        p_website,
+        p_mail,
+        p_schedule,
+        p_mission,
+        p_vision,
+        p_address_id,
+        p_client_id,
         p_industry_id,
-        NOW()
+        NOW(),
+        p_logo_image
     );
-   
+
     set @id = @@identity;
-   
+
     while j<JSON_LENGTH(p_services) DO
-    
+
      set @level_importance = JSON_UNQUOTE(JSON_EXTRACT(p_services,CONCAT('$[',j, '].level_importance')));
      set @service_id = JSON_UNQUOTE(JSON_EXTRACT(p_services,CONCAT('$[',j, '].id')));
-    
-    
+
+
    INSERT INTO services_business(level_importance,business_id,service_id)
     VALUES (
-        1, 
-        @id, 
+        1,
+        @id,
         @service_id
     );
-   
+
    set j = j + 1;
             end while;
             END

@@ -4,7 +4,7 @@ import datetime
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('SmartContentBackendClientsAndBusinessApp', '0045_update_business'),
+        ('SmartContentBackendClientsAndBusinessApp', '0034_servicebusiness_deleted_at'),
     ]
 
     operations = [

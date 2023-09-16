@@ -4,7 +4,7 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('SmartContentBackendClientsAndBusinessApp', '0034_servicebusiness_deleted_at'),
+        ('SmartContentBackendClientsAndBusinessApp', '0061_update_client'),
     ]
 
     operations = [
@@ -25,11 +25,16 @@ class Migration(migrations.Migration):
            IN p_target_audience TEXT,
            IN p_client_id INT,
            IN p_mission TEXT,
-           IN p_vision TEXT)
+           IN p_vision TEXT,
+           IN p_logo_image VARCHAR(360))
            
   BEGIN
     declare j int default 0;
-		  declare i int default 0;
+	declare i int default 0;
+    
+    IF p_logo_image = '' OR p_logo_image IS NULL THEN
+			SELECT logo_carpet INTO p_logo_image FROM businesses where id = p_business_id;
+	END IF;
 	
                UPDATE businesses
                     SET name = p_name,
@@ -43,7 +48,8 @@ class Migration(migrations.Migration):
                     vision      = p_vision,
                     address_id    = p_address_id,
                     industry_id    = p_industry_id,
-                    created_at    = NOW()
+                    created_at    = NOW(),
+                    logo_carpet = p_logo_image
                 WHERE id = p_business_id;
                
                

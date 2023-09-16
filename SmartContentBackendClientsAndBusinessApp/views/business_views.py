@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db import connection
 import json
+from SmartContentBackendClientsAndBusinessApp.helpers.upload_file import upload_file, get_file_url
 
 class BusinessCreateView(APIView):
     def post(self, request):
@@ -22,13 +23,17 @@ class BusinessCreateView(APIView):
             client_id = request.data.get('client_id')
             mission = request.data.get('mission')
             vision = request.data.get('vision')
-        
+            file_obj = request.data.get('image')
+            file_name = ''
+            if file_obj is not None:
+                file_name = upload_file(file_obj)
+
             print('services ', type(services))
             
             
             with connection.cursor() as cursor:
-                    cursor.execute("CALL insert_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)",
-                       [name,facebook_page,json.dumps(services),phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision ])
+                    cursor.execute("CALL insert_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s)",
+                       [name,facebook_page,json.dumps(services),phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision,file_name ])
                     namesss = cursor.fetchall()
             return Response({'message': namesss}, status=status.HTTP_200_OK)
 
@@ -52,6 +57,10 @@ class BusinessCreateView(APIView):
             client_id = request.data.get('client_id')
             mission = request.data.get('mission')
             vision = request.data.get('vision')
+            file_obj = request.data.get('image')
+            file_name = ''
+            if file_obj is not None:
+                file_name = upload_file(file_obj)
         
 
             with connection.cursor() as cursor:

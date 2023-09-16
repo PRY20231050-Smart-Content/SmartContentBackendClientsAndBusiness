@@ -6,7 +6,7 @@ def upload_file(file_obj):
     print('upload file file_obj ', type(file_obj))
     # Nombre del archivo en S3 (puede ser el mismo nombre que el archivo original)
     uuid_generated = generate_uuid()
-    file_name = file_obj.name+'/'+ uuid_generated
+    file_name = 'EXAMPLE'+'/'+ uuid_generated+'/'+ file_obj.name
 
     try:
         file_name = default_storage.save(file_obj.name, ContentFile(file_obj.read()))

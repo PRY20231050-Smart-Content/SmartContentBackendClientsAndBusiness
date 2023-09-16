@@ -31,7 +31,6 @@ class Migration(migrations.Migration):
                 email = p_email,
                 phone = p_phone,
                 profile_picture = p_profile_picture,
-                user_id = p_user_id,
                 updated_at = NOW()
             WHERE id = p_client_id;
             

@@ -11,6 +11,7 @@ class BusinessCreateView(APIView):
             name = request.data.get('name')
             facebook_page = request.data.get('facebook_page')
             services = request.data.get('services')
+            services = json.loads(services) if services else []
             phone = request.data.get('phone')         
             address_id = request.data.get('address_id')
             website = request.data.get('website')
@@ -22,7 +23,7 @@ class BusinessCreateView(APIView):
             mission = request.data.get('mission')
             vision = request.data.get('vision')
         
-            
+            print('services ', type(services))
             
             
             with connection.cursor() as cursor:

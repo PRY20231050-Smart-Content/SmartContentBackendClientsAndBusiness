@@ -7,6 +7,8 @@ from django.db import connection
 from django.core.paginator import Paginator, Page
 from rest_framework.decorators import api_view
 import json
+from SmartContentBackendClientsAndBusinessApp.helpers.upload_file import upload_file, get_file_url
+import uuid
 
 class ClientCreateView(APIView):
     def post(self, request):
@@ -16,11 +18,16 @@ class ClientCreateView(APIView):
             address_id = request.data.get('address_id')
             email = request.data.get('email')
             phone = request.data.get('phone')
-            profile_picture = request.data.get('profile_picture')
             user_id = request.data.get('user_id')
+            profile_picture = request.data.get('profile_picture')
+            profile_picture_file_name = ''
+            
+            if profile_picture is not None:
+                profile_picture_file_name = upload_file(profile_picture)
+            
 
             with connection.cursor() as cursor:
-                 cursor.execute("CALL insert_client(%s, %s, %s, %s, %s, %s, %s)", [first_name, last_name, address_id, email, phone, profile_picture, user_id])
+                 cursor.execute("CALL insert_client(%s, %s, %s, %s, %s, %s, %s)", [first_name, last_name, address_id, email, phone, profile_picture_file_name, user_id])
                  data = cursor.fetchone()
 
             if data:
@@ -52,10 +59,13 @@ class ClientCreateView(APIView):
             email = request.data.get('email')
             phone = request.data.get('phone')
             profile_picture = request.data.get('profile_picture')
+            profile_picture_file_name=''
+            if profile_picture is not None:
+                profile_picture_file_name = upload_file(profile_picture)
             user_id = request.data.get('user_id')
 
             with connection.cursor() as cursor:
-                 cursor.execute("CALL update_client(%s, %s, %s, %s, %s, %s, %s, %s)", [client_id, first_name, last_name, address_id, email, phone, profile_picture, user_id])
+                 cursor.execute("CALL update_client(%s, %s, %s, %s, %s, %s, %s, %s)", [client_id, first_name, last_name, address_id, email, phone, profile_picture_file_name, user_id])
             
             return Response({'message': 'Client updated.'}, status=status.HTTP_200_OK)
 

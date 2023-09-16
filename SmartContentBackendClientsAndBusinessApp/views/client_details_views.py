@@ -8,6 +8,7 @@ from django.core.paginator import Paginator, Page
 from rest_framework.decorators import api_view
 from SmartContentBackendClientsAndBusinessApp.helpers.upload_file import upload_file, get_file_url
 
+import json
 class ClientCreateViewDetails(APIView):
   
     def post(self, request):
@@ -54,6 +55,13 @@ class ClientCreateViewDetails(APIView):
                     'address_id' : data[10],
                     'profile_picture': get_file_url(data[11]),
                 }
+                
+                #recorrer los negocios y business_image_url = get_file_url(data[11])
+                businesses = json.loads(client_details['business_id'])
+                for business in businesses:
+                    business['business_image_url'] = get_file_url(business['business_image_url'])
+                    
+                client_details['business_id'] = json.dumps(businesses)
 
                 return Response(client_details, status=status.HTTP_200_OK)
 

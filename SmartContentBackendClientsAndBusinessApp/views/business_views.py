@@ -47,6 +47,7 @@ class BusinessCreateView(APIView):
             name = request.data.get('name')
             facebook_page = request.data.get('facebook_page')
             services = request.data.get('services')
+            services = json.loads(services) if services else []
             phone = request.data.get('phone')         
             address_id = request.data.get('address_id')
             website = request.data.get('website')
@@ -64,8 +65,8 @@ class BusinessCreateView(APIView):
         
 
             with connection.cursor() as cursor:
-                      cursor.execute("CALL update_business(%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)", 
-                       [business_id, name, facebook_page,json.dumps(services),phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision ])
+                      cursor.execute("CALL update_business(%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s)", 
+                       [business_id, name, facebook_page,json.dumps(services),phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision,file_name ])
                       namesss = cursor.fetchone()
             return Response({'message': namesss}, status=status.HTTP_200_OK)
 

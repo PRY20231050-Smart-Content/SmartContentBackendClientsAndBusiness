@@ -5,25 +5,28 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('SmartContentBackendClientsAndBusinessApp', '0002_insert_client'),
+        ('SmartContentBackendClientsAndBusinessApp', '0058_copies_flyer_text'),
     ]
 
     operations = [
         migrations.RunSQL("""
-
           DROP PROCEDURE IF EXISTS update_client;
-
           CREATE PROCEDURE update_client(
           IN p_client_id INT,
-          IN p_first_name VARCHAR(255), 
-          IN p_last_name VARCHAR(255), 
-          IN p_address_id INT, 
-          IN p_email VARCHAR(255), 
-          IN p_phone VARCHAR(15), 
+          IN p_first_name VARCHAR(255),
+          IN p_last_name VARCHAR(255),
+          IN p_address_id INT,
+          IN p_email VARCHAR(255),
+          IN p_phone VARCHAR(15),
           IN p_profile_picture VARCHAR(255),
           IN p_user_id INT)
-          BEGIN
-          
+BEGIN
+
+			-- check if profile is not coming from backend
+            IF p_profile_picture = '' OR p_profile_picture IS NULL THEN
+                SELECT profile_picture INTO p_profile_picture FROM clients WHERE id = p_client_id;
+            END IF;
+		
             UPDATE clients
             SET first_name = p_first_name,
                 last_name = p_last_name,
@@ -31,10 +34,11 @@ class Migration(migrations.Migration):
                 email = p_email,
                 phone = p_phone,
                 profile_picture = p_profile_picture,
+                user_id = p_user_id,
                 updated_at = NOW()
             WHERE id = p_client_id;
-            
-          END 
+
+          END
         """)
     ]
 

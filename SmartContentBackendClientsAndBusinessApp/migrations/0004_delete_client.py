@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('SmartContentBackendClientsAndBusinessApp', '0003_update_client'),
+        ('SmartContentBackendClientsAndBusinessApp', '0002_insert_client'),
     ]
 
     operations = [

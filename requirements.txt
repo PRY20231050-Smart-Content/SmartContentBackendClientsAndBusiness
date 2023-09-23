@@ -6,3 +6,4 @@ mysqlclient
 boto3
 django-storages
 nltk
+pandas

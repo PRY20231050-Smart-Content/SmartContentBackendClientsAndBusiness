@@ -3,3 +3,6 @@ djangorestframework
 requests
 django-cors-headers
 mysqlclient
+boto3
+django-storages
+nltk

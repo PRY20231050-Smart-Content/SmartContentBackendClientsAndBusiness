@@ -14,7 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import path
+from django.urls import path, include
+
 from SmartContentBackendClientsAndBusinessApp.views.client_views import ClientCreateView
 from SmartContentBackendClientsAndBusinessApp.views.industry_views import IndustryCreateView
 from SmartContentBackendClientsAndBusinessApp.views.address_views import AddressCreateView
@@ -29,7 +30,7 @@ from SmartContentBackendClientsAndBusinessApp.views.business_services_view impor
 
 
 urlpatterns = [
-  
+   path('business/', include([
     path('create-client/', ClientCreateView.as_view()),
     path('update-client/', ClientCreateView.as_view()),
     path('delete-client/', ClientCreateView.as_view()),
@@ -46,4 +47,5 @@ urlpatterns = [
     path('get-select-clients/', ClientSelectView.as_view()),
     path('get-select-business/', BusinessSelectView.as_view()),
     path('get-business-services/<int:business_id>/', BusinessServicesView.as_view()),
+     ])),
 ]

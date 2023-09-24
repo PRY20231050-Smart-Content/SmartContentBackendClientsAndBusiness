@@ -5,6 +5,9 @@ from rest_framework import status
 from django.db import connection
 import json
 from SmartContentBackendClientsAndBusinessApp.helpers.upload_file import upload_file, get_file_url
+from SmartContentBackendClientsAndBusinessApp.models.businesses import Business
+import pandas as pd
+from SmartContentBackendClientsAndBusinessApp.models import Copies
 
 class BusinessCreateView(APIView):
     def post(self, request):
@@ -35,6 +38,26 @@ class BusinessCreateView(APIView):
                     cursor.execute("CALL insert_business(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s)",
                        [name,facebook_page,json.dumps(services),phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision,file_name ])
                     namesss = cursor.fetchall()
+
+                    excel_file = request.data.get('excel_copies')
+                    last_business_created = Business.objects.latest('created_at')
+                    business_id = request.data.get('business_id')  # Assuming 'business_id' is sent from the frontend
+                    
+                    if excel_file and business_id:
+                        data = pd.read_excel(excel_file)
+                    
+                        
+                        
+                        for index, row in data.iterrows():
+                            copys = Copies.objects.create(
+                                copy=row['Copy'],
+                                likes=row['Likes'],
+                                shared=row['Shared'],
+                                flyer_text=row['Flyer Text'],
+                                business_id=last_business_created,
+                                # Add other fields from the Excel as needed
+                            )
+
             return Response({'message': namesss}, status=status.HTTP_200_OK)
 
         except Exception as e:

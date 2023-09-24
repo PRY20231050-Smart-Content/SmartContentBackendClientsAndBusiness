@@ -23,13 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ddurv9%g)*g*m-gxt^_!u0%4q+6l*!r3j0hj+0r#)-h7d)s*@m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','52.146.67.219','20.246.217.80', '*','http://localhost:8080','http://localhost:8002']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1','52.146.67.219','20.246.217.80', '*','http://localhost:8080','http://localhost:8002','20.106.131.22']
 CORS_ALLOWED_ORIGINS = [
    'http://localhost:8080'
 ]
 CORS_ALLOW_ALL_ORIGINS = True
+
 
 
 
@@ -80,16 +81,18 @@ WSGI_APPLICATION = 'SmartContentBackendClientsAndBusiness.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tesis',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',   # O la dirección IP o el nombre de dominio si es una base de datos remota
-        'PORT': '3306',   # El puerto puede variar, asegúrate de usar el correcto para tu base de datos
-    
-      'OPTIONS': {
+        'NAME': 'tesis',  # Your database name
+        'USER': 'smartcontentmachine',  # Your Azure username
+        'PASSWORD': 'cielo2870#',  # Your Azure password
+        'HOST': 'smartcontentmachine.mysql.database.azure.com',  # Azure hostname
+        'PORT': '3306',  # MySQL default port
+        'OPTIONS': {
             'charset': 'utf8mb4',
+            'ssl': {
+                'ca': 'DigiCertGlobalRootCA.crt.pem', # Ruta al archivo SSL
+            },
         },
-         }
+    }
 }
 
 

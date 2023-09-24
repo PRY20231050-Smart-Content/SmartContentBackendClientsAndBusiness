@@ -41,9 +41,10 @@ class BusinessCreateView(APIView):
 
                     excel_file = request.data.get('excel_copies')
                     last_business_created = Business.objects.latest('created_at')
-                    business_id = request.data.get('business_id')  # Assuming 'business_id' is sent from the frontend
+
+                    print('excel_file ', excel_file)
                     
-                    if excel_file and business_id:
+                    if excel_file and last_business_created:
                         data = pd.read_excel(excel_file)
                     
                         
@@ -91,6 +92,22 @@ class BusinessCreateView(APIView):
                       cursor.execute("CALL update_business(%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s,%s)", 
                        [business_id, name, facebook_page,json.dumps(services),phone,address_id, website, mail,industry_id,schedule,target_audience, client_id, mission,vision,file_name ])
                       namesss = cursor.fetchone()
+
+            excel_file = request.data.get('excel_copies')
+
+            if excel_file and business_id:
+                data = pd.read_excel(excel_file)           
+                        
+                for index, row in data.iterrows():
+                    copys = Copies.objects.create(
+                        copy=row['Copy'],
+                        likes=row['Likes'],
+                        shared=row['Shared'],
+                        flyer_text=row['Flyer Text'],
+                        business_id_id=business_id,
+                        # Add other fields from the Excel as needed
+                        )
+
             return Response({'message': namesss}, status=status.HTTP_200_OK)
 
         except Exception as e:

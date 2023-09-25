@@ -60,7 +60,7 @@ class ClientCreateViewDetails(APIView):
                 businesses = json.loads(client_details['business_id'])
                 for business in businesses:
                     business['business_image_url'] = get_file_url(business['business_image_url'])
-                    
+                #prueba1
                 client_details['business_id'] = json.dumps(businesses)
 
                 return Response(client_details, status=status.HTTP_200_OK)

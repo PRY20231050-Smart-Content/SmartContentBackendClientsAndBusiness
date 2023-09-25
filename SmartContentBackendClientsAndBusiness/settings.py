@@ -78,37 +78,37 @@ WSGI_APPLICATION = 'SmartContentBackendClientsAndBusiness.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'tesis',  # Your database name
-#         'USER': 'smartcontentmachine',  # Your Azure username
-#         'PASSWORD': 'cielo2870#',  # Your Azure password
-#         'HOST': 'smartcontentmachine.mysql.database.azure.com',  # Azure hostname
-#         'PORT': '3306',  # MySQL default port
-#         'OPTIONS': {
-#             'charset': 'utf8mb4',
-#             'ssl': {
-#                 'ca': 'DigiCertGlobalRootCA.crt.pem', # Ruta al archivo SSL
-#             },
-#         },
-#     }
-# }
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tesis',
-        'USER': 'root', 
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': '3306',
-      'OPTIONS': {
+        'NAME': 'tesis',  # Your database name
+        'USER': 'smartcontentmachine',  # Your Azure username
+        'PASSWORD': 'cielo2870#',  # Your Azure password
+        'HOST': 'smartcontentmachine.mysql.database.azure.com',  # Azure hostname
+        'PORT': '3306',  # MySQL default port
+        'OPTIONS': {
             'charset': 'utf8mb4',
+            'ssl': {
+                'ca': 'DigiCertGlobalRootCA.crt.pem', # Ruta al archivo SSL
+            },
         },
-        
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'tesis',
+#         'USER': 'root', 
+#         'PASSWORD': 'root',
+#         'HOST': 'localhost',
+#         'PORT': '3306',
+#       'OPTIONS': {
+#             'charset': 'utf8mb4',
+#         },
+        
+#     }
+# }
 
 
 

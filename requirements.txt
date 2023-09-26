@@ -7,4 +7,4 @@ boto3
 django-storages
 nltk
 pandas
-openpyxl
+openpyxl>=3.0.7
